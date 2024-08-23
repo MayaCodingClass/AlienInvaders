@@ -1,0 +1,531 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		910002FE2C79388100BF43C1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 910002FD2C79388100BF43C1 /* AppDelegate.swift */; };
+		910003002C79388100BF43C1 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 910002FF2C79388100BF43C1 /* GameViewController.swift */; };
+		910003032C79388100BF43C1 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 910003022C79388100BF43C1 /* Base */; };
+		910003062C79388100BF43C1 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 910003052C79388100BF43C1 /* Base */; };
+		9100030E2C79388100BF43C1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9100030D2C79388100BF43C1 /* AppDelegate.swift */; };
+		910003102C79388100BF43C1 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9100030F2C79388100BF43C1 /* GameViewController.swift */; };
+		910003132C79388100BF43C1 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 910003122C79388100BF43C1 /* Base */; };
+		910003152C79388100BF43C1 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 910002F22C79388000BF43C1 /* Actions.sks */; };
+		910003162C79388100BF43C1 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 910002F22C79388000BF43C1 /* Actions.sks */; };
+		910003172C79388100BF43C1 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 910002F32C79388000BF43C1 /* GameScene.sks */; };
+		910003182C79388100BF43C1 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 910002F32C79388000BF43C1 /* GameScene.sks */; };
+		910003192C79388100BF43C1 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 910002F42C79388000BF43C1 /* GameScene.swift */; };
+		9100031A2C79388100BF43C1 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 910002F42C79388000BF43C1 /* GameScene.swift */; };
+		9100031B2C79388100BF43C1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 910002F52C79388100BF43C1 /* Assets.xcassets */; };
+		9100031C2C79388100BF43C1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 910002F52C79388100BF43C1 /* Assets.xcassets */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		910002F22C79388000BF43C1 /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Actions.sks; sourceTree = "<group>"; };
+		910002F32C79388000BF43C1 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
+		910002F42C79388000BF43C1 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		910002F52C79388100BF43C1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		910002FA2C79388100BF43C1 /* AlienInvaders.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AlienInvaders.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		910002FD2C79388100BF43C1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		910002FF2C79388100BF43C1 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
+		910003022C79388100BF43C1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		910003052C79388100BF43C1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		9100030B2C79388100BF43C1 /* AlienInvaders.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AlienInvaders.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9100030D2C79388100BF43C1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		9100030F2C79388100BF43C1 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
+		910003122C79388100BF43C1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		910003142C79388100BF43C1 /* AlienInvaders_macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AlienInvaders_macOS.entitlements; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		910002F72C79388100BF43C1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		910003082C79388100BF43C1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		910002EC2C79388000BF43C1 = {
+			isa = PBXGroup;
+			children = (
+				910002F12C79388000BF43C1 /* AlienInvaders Shared */,
+				910002FC2C79388100BF43C1 /* AlienInvaders iOS */,
+				9100030C2C79388100BF43C1 /* AlienInvaders macOS */,
+				910002FB2C79388100BF43C1 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		910002F12C79388000BF43C1 /* AlienInvaders Shared */ = {
+			isa = PBXGroup;
+			children = (
+				910002F22C79388000BF43C1 /* Actions.sks */,
+				910002F32C79388000BF43C1 /* GameScene.sks */,
+				910002F42C79388000BF43C1 /* GameScene.swift */,
+				910002F52C79388100BF43C1 /* Assets.xcassets */,
+			);
+			path = "AlienInvaders Shared";
+			sourceTree = "<group>";
+		};
+		910002FB2C79388100BF43C1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				910002FA2C79388100BF43C1 /* AlienInvaders.app */,
+				9100030B2C79388100BF43C1 /* AlienInvaders.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		910002FC2C79388100BF43C1 /* AlienInvaders iOS */ = {
+			isa = PBXGroup;
+			children = (
+				910002FD2C79388100BF43C1 /* AppDelegate.swift */,
+				910002FF2C79388100BF43C1 /* GameViewController.swift */,
+				910003012C79388100BF43C1 /* Main.storyboard */,
+				910003042C79388100BF43C1 /* LaunchScreen.storyboard */,
+			);
+			path = "AlienInvaders iOS";
+			sourceTree = "<group>";
+		};
+		9100030C2C79388100BF43C1 /* AlienInvaders macOS */ = {
+			isa = PBXGroup;
+			children = (
+				9100030D2C79388100BF43C1 /* AppDelegate.swift */,
+				9100030F2C79388100BF43C1 /* GameViewController.swift */,
+				910003112C79388100BF43C1 /* Main.storyboard */,
+				910003142C79388100BF43C1 /* AlienInvaders_macOS.entitlements */,
+			);
+			path = "AlienInvaders macOS";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		910002F92C79388100BF43C1 /* AlienInvaders iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9100031F2C79388100BF43C1 /* Build configuration list for PBXNativeTarget "AlienInvaders iOS" */;
+			buildPhases = (
+				910002F62C79388100BF43C1 /* Sources */,
+				910002F72C79388100BF43C1 /* Frameworks */,
+				910002F82C79388100BF43C1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "AlienInvaders iOS";
+			productName = "AlienInvaders iOS";
+			productReference = 910002FA2C79388100BF43C1 /* AlienInvaders.app */;
+			productType = "com.apple.product-type.application";
+		};
+		9100030A2C79388100BF43C1 /* AlienInvaders macOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 910003222C79388100BF43C1 /* Build configuration list for PBXNativeTarget "AlienInvaders macOS" */;
+			buildPhases = (
+				910003072C79388100BF43C1 /* Sources */,
+				910003082C79388100BF43C1 /* Frameworks */,
+				910003092C79388100BF43C1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "AlienInvaders macOS";
+			productName = "AlienInvaders macOS";
+			productReference = 9100030B2C79388100BF43C1 /* AlienInvaders.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		910002ED2C79388000BF43C1 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1540;
+				LastUpgradeCheck = 1540;
+				TargetAttributes = {
+					910002F92C79388100BF43C1 = {
+						CreatedOnToolsVersion = 15.4;
+					};
+					9100030A2C79388100BF43C1 = {
+						CreatedOnToolsVersion = 15.4;
+					};
+				};
+			};
+			buildConfigurationList = 910002F02C79388000BF43C1 /* Build configuration list for PBXProject "AlienInvaders" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 910002EC2C79388000BF43C1;
+			productRefGroup = 910002FB2C79388100BF43C1 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				910002F92C79388100BF43C1 /* AlienInvaders iOS */,
+				9100030A2C79388100BF43C1 /* AlienInvaders macOS */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		910002F82C79388100BF43C1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				910003172C79388100BF43C1 /* GameScene.sks in Resources */,
+				910003032C79388100BF43C1 /* Base in Resources */,
+				910003152C79388100BF43C1 /* Actions.sks in Resources */,
+				910003062C79388100BF43C1 /* Base in Resources */,
+				9100031B2C79388100BF43C1 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		910003092C79388100BF43C1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				910003132C79388100BF43C1 /* Base in Resources */,
+				910003182C79388100BF43C1 /* GameScene.sks in Resources */,
+				9100031C2C79388100BF43C1 /* Assets.xcassets in Resources */,
+				910003162C79388100BF43C1 /* Actions.sks in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		910002F62C79388100BF43C1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				910003192C79388100BF43C1 /* GameScene.swift in Sources */,
+				910003002C79388100BF43C1 /* GameViewController.swift in Sources */,
+				910002FE2C79388100BF43C1 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		910003072C79388100BF43C1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9100031A2C79388100BF43C1 /* GameScene.swift in Sources */,
+				910003102C79388100BF43C1 /* GameViewController.swift in Sources */,
+				9100030E2C79388100BF43C1 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		910003012C79388100BF43C1 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				910003022C79388100BF43C1 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		910003042C79388100BF43C1 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				910003052C79388100BF43C1 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		910003112C79388100BF43C1 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				910003122C79388100BF43C1 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		9100031D2C79388100BF43C1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		9100031E2C79388100BF43C1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		910003202C79388100BF43C1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = FYX55SR9QC;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.doug.AlienInvaders;
+				PRODUCT_NAME = AlienInvaders;
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		910003212C79388100BF43C1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = FYX55SR9QC;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.doug.AlienInvaders;
+				PRODUCT_NAME = AlienInvaders;
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		910003232C79388100BF43C1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "AlienInvaders macOS/AlienInvaders_macOS.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = FYX55SR9QC;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSMainStoryboardFile = Main;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.doug.AlienInvaders;
+				PRODUCT_NAME = AlienInvaders;
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		910003242C79388100BF43C1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "AlienInvaders macOS/AlienInvaders_macOS.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = FYX55SR9QC;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSMainStoryboardFile = Main;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.doug.AlienInvaders;
+				PRODUCT_NAME = AlienInvaders;
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		910002F02C79388000BF43C1 /* Build configuration list for PBXProject "AlienInvaders" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9100031D2C79388100BF43C1 /* Debug */,
+				9100031E2C79388100BF43C1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9100031F2C79388100BF43C1 /* Build configuration list for PBXNativeTarget "AlienInvaders iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				910003202C79388100BF43C1 /* Debug */,
+				910003212C79388100BF43C1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		910003222C79388100BF43C1 /* Build configuration list for PBXNativeTarget "AlienInvaders macOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				910003232C79388100BF43C1 /* Debug */,
+				910003242C79388100BF43C1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 910002ED2C79388000BF43C1 /* Project object */;
+}
