@@ -69,7 +69,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 let alien = SKSpriteNode(color: .green, size: alienSize)
                 let xOffset = CGFloat(col) * (alienSize.width + spacing.width)
                 let yOffset = CGFloat(row) * (alienSize.height + spacing.height)
-                alien.position = CGPoint(x: startX + xOffset, y: self.size.height / 2 - 100 - yOffset)
+                alien.position = CGPoint(
+                    x: alienSize.width / 2 + startX + xOffset,
+                    y:  -alienSize.height / 2 + self.size.height / 2 - 100 - yOffset)
                 alien.physicsBody = SKPhysicsBody(rectangleOf: alienSize)
                 alien.physicsBody?.isDynamic = true
                 alien.physicsBody?.categoryBitMask = PhysicsCategory.alien
@@ -82,13 +84,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func startAlienMovement() {
-        let alienBoxWidth: CGFloat = 40 * 4 + 20 * (4 - 1)
+        let alienBoxWidth: CGFloat = 40 * 5 + 20 * (5 - 1)
         let widthMinusAliensWithPadding = self.size.width - alienBoxWidth - 20
-        
-        let moveRight = SKAction.moveBy(x: widthMinusAliensWithPadding / 2, y: 0, duration: 2.5)
-        let moveLeft = SKAction.moveBy(x: -widthMinusAliensWithPadding, y: 0, duration: 5.0)
-        let moveDown = SKAction.moveBy(x: 0, y: -20, duration: 0.5)
-        let moveRight2 = SKAction.moveBy(x: widthMinusAliensWithPadding / 2, y: 0, duration: 2.5)
+
+        let moveRight = SKAction.moveBy(x: widthMinusAliensWithPadding / 2, y: 0, duration: 2)
+        let moveLeft = SKAction.moveBy(x: -widthMinusAliensWithPadding, y: 0, duration: 4)
+        let moveDown = SKAction.moveBy(x: 0, y: -60, duration: 0.25)
+        let moveRight2 = SKAction.moveBy(x: widthMinusAliensWithPadding / 2, y: 0, duration: 2)
         let moveSequence = SKAction.sequence([moveRight, moveDown, moveLeft, moveDown, moveRight2])
         let repeatMovement = SKAction.repeatForever(moveSequence)
         
