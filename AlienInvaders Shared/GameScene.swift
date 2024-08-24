@@ -180,6 +180,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         laser.removeFromParent()
         alien.removeFromParent()
         
-        run(SKAction.playSoundFileNamed("explosion.wav", waitForCompletion: false))
+        run(SKAction.playSoundFileNamed("splat.m4a", waitForCompletion: false))
     }
 }
