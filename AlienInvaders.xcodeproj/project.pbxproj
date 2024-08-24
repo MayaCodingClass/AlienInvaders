@@ -22,6 +22,8 @@
 		9100031A2C79388100BF43C1 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 910002F42C79388000BF43C1 /* GameScene.swift */; };
 		9100031B2C79388100BF43C1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 910002F52C79388100BF43C1 /* Assets.xcassets */; };
 		9100031C2C79388100BF43C1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 910002F52C79388100BF43C1 /* Assets.xcassets */; };
+		910003292C79654000BF43C1 /* laser.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 910003282C79654000BF43C1 /* laser.m4a */; };
+		9100032A2C79654000BF43C1 /* laser.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 910003282C79654000BF43C1 /* laser.m4a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +41,7 @@
 		9100030F2C79388100BF43C1 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		910003122C79388100BF43C1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		910003142C79388100BF43C1 /* AlienInvaders_macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AlienInvaders_macOS.entitlements; sourceTree = "<group>"; };
+		910003282C79654000BF43C1 /* laser.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = laser.m4a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +79,7 @@
 				910002F32C79388000BF43C1 /* GameScene.sks */,
 				910002F42C79388000BF43C1 /* GameScene.swift */,
 				910002F52C79388100BF43C1 /* Assets.xcassets */,
+				910003282C79654000BF43C1 /* laser.m4a */,
 			);
 			path = "AlienInvaders Shared";
 			sourceTree = "<group>";
@@ -192,6 +196,7 @@
 			files = (
 				910003172C79388100BF43C1 /* GameScene.sks in Resources */,
 				910003032C79388100BF43C1 /* Base in Resources */,
+				910003292C79654000BF43C1 /* laser.m4a in Resources */,
 				910003152C79388100BF43C1 /* Actions.sks in Resources */,
 				910003062C79388100BF43C1 /* Base in Resources */,
 				9100031B2C79388100BF43C1 /* Assets.xcassets in Resources */,
@@ -204,6 +209,7 @@
 			files = (
 				910003132C79388100BF43C1 /* Base in Resources */,
 				910003182C79388100BF43C1 /* GameScene.sks in Resources */,
+				9100032A2C79654000BF43C1 /* laser.m4a in Resources */,
 				9100031C2C79388100BF43C1 /* Assets.xcassets in Resources */,
 				910003162C79388100BF43C1 /* Actions.sks in Resources */,
 			);

@@ -154,7 +154,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let removeAction = SKAction.removeFromParent()
         laser.run(SKAction.sequence([moveAction, removeAction]))
         
-        run(SKAction.playSoundFileNamed("laser.wav", waitForCompletion: false))
+        run(SKAction.playSoundFileNamed("laser.m4a", waitForCompletion: false))
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
