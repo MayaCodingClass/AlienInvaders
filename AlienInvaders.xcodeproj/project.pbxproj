@@ -32,6 +32,8 @@
 		910003332C7D138E00BF43C1 /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 910003312C7D138E00BF43C1 /* Stack.swift */; };
 		910003352C7D1D6600BF43C1 /* Audio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 910003342C7D1D6600BF43C1 /* Audio.swift */; };
 		910003362C7D1D6600BF43C1 /* Audio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 910003342C7D1D6600BF43C1 /* Audio.swift */; };
+		910003382C7D2A6C00BF43C1 /* MyCuteAlien.swift in Sources */ = {isa = PBXBuildFile; fileRef = 910003372C7D2A6C00BF43C1 /* MyCuteAlien.swift */; };
+		910003392C7D2A6C00BF43C1 /* MyCuteAlien.swift in Sources */ = {isa = PBXBuildFile; fileRef = 910003372C7D2A6C00BF43C1 /* MyCuteAlien.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +56,7 @@
 		9100032E2C7D12FA00BF43C1 /* Alien.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alien.swift; sourceTree = "<group>"; };
 		910003312C7D138E00BF43C1 /* Stack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stack.swift; sourceTree = "<group>"; };
 		910003342C7D1D6600BF43C1 /* Audio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Audio.swift; sourceTree = "<group>"; };
+		910003372C7D2A6C00BF43C1 /* MyCuteAlien.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCuteAlien.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,8 +93,9 @@
 				910002F22C79388000BF43C1 /* Actions.sks */,
 				910002F32C79388000BF43C1 /* GameScene.sks */,
 				910002F42C79388000BF43C1 /* GameScene.swift */,
-				910003342C7D1D6600BF43C1 /* Audio.swift */,
 				9100032E2C7D12FA00BF43C1 /* Alien.swift */,
+				910003372C7D2A6C00BF43C1 /* MyCuteAlien.swift */,
+				910003342C7D1D6600BF43C1 /* Audio.swift */,
 				910003312C7D138E00BF43C1 /* Stack.swift */,
 				910002F52C79388100BF43C1 /* Assets.xcassets */,
 				910003282C79654000BF43C1 /* laser.m4a */,
@@ -245,6 +249,7 @@
 				910003322C7D138E00BF43C1 /* Stack.swift in Sources */,
 				910003002C79388100BF43C1 /* GameViewController.swift in Sources */,
 				910002FE2C79388100BF43C1 /* AppDelegate.swift in Sources */,
+				910003382C7D2A6C00BF43C1 /* MyCuteAlien.swift in Sources */,
 				9100032F2C7D12FA00BF43C1 /* Alien.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -258,6 +263,7 @@
 				910003332C7D138E00BF43C1 /* Stack.swift in Sources */,
 				910003102C79388100BF43C1 /* GameViewController.swift in Sources */,
 				9100030E2C79388100BF43C1 /* AppDelegate.swift in Sources */,
+				910003392C7D2A6C00BF43C1 /* MyCuteAlien.swift in Sources */,
 				910003302C7D12FA00BF43C1 /* Alien.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

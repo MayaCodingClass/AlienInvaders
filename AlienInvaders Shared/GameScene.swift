@@ -42,7 +42,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         static let defender: UInt32 = 0x1 << 3
     }
     
-    struct AlienLayout {
+    struct Layout {
         let rows: Int
         let columns: Int
         let size: CGSize
@@ -60,7 +60,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
-    let alienLayout = AlienLayout(
+    static let AlienLayout = Layout(
         rows: 4,
         columns: 5,
         size: CGSize(width: 40, height: 40),
@@ -98,22 +98,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func setupAliens() {
-        let rows = alienLayout.rows
-        let cols = alienLayout.columns
-        let totalWidth = alienLayout.totalWidth
+        let rows = GameScene.AlienLayout.rows
+        let cols = GameScene.AlienLayout.columns
+        let totalWidth = GameScene.AlienLayout.totalWidth
         let startX = -totalWidth / 2
         let startY = self.size.height / 2 - 100
         
         for row in 0..<rows {
             for col in 0..<cols {
-                let alien = Alien(color: .green, size: alienLayout.size)
-                let offset = alienLayout.offset(col: col, row: row)
+                let alien = Alien(color: .green, size: GameScene.AlienLayout.size)
+                let offset = GameScene.AlienLayout.offset(col: col, row: row)
                 alien.node.position = CGPoint(
-                    x: alienLayout.size.width / 2 + startX + offset.x,
-                    y: -alienLayout.size.height / 2 + startY - offset.y)
+                    x: GameScene.AlienLayout.size.width / 2 + startX + offset.x,
+                    y: -GameScene.AlienLayout.size.height / 2 + startY - offset.y)
 
                 do {
-                    let body = SKPhysicsBody(rectangleOf: alienLayout.size)
+                    let body = SKPhysicsBody(rectangleOf: GameScene.AlienLayout.size)
                     body.isDynamic = true
                     body.categoryBitMask = PhysicsCategory.alien
                     body.contactTestBitMask = PhysicsCategory.laser

@@ -11,34 +11,52 @@ typealias ActionsList = ListHolder<SKAction>
 typealias ActionsStack = Stack<ActionsList>
 
 class Alien {
+    let offset: CGSize
     var node: SKSpriteNode
     var actionsStack = ActionsStack()
     
-    init(color: UIColor, size: CGSize) {
+    init(color: UIColor, size: CGSize, offset: CGSize = .zero) {
+        self.offset = offset
         node = SKSpriteNode(color: color, size: size)
     }
     
-    func moveUp(distance: CGFloat, duration: CGFloat = 1.0) {
+    // Override these properties and functions in subclass
+    
+    var imageName: String {
+        fatalError("'imageName' must be overridden by a subclass")
+    }
+    
+    func moveMyAlienAround() {
+        fatalError("'moveMyAlienAround' must be overridden by a subclass")
+    }
+    
+    func splat() -> [Alien] {
+        return []
+    }
+    
+    // Movement functions
+
+    final func moveUp(distance: CGFloat, duration: CGFloat = 1.0) {
         append(SKAction.moveBy(x: 0, y: distance, duration: duration))
     }
     
-    func moveDown(distance: CGFloat, duration: CGFloat = 1.0) {
+    final func moveDown(distance: CGFloat, duration: CGFloat = 1.0) {
         append(SKAction.moveBy(x: 0, y: -distance, duration: duration))
     }
     
-    func moveLeft(distance: CGFloat, duration: CGFloat = 1.0) {
+    final func moveLeft(distance: CGFloat, duration: CGFloat = 1.0) {
         append(SKAction.moveBy(x: -distance, y: 0, duration: duration))
     }
     
-    func moveRight(distance: CGFloat, duration: CGFloat = 1.0) {
+    final func moveRight(distance: CGFloat, duration: CGFloat = 1.0) {
         append(SKAction.moveBy(x: distance, y: 0, duration: duration))
     }
     
-    func moveBy(x: CGFloat, y: CGFloat, duration: CGFloat = 1.0) {
+    final func moveBy(x: CGFloat, y: CGFloat, duration: CGFloat = 1.0) {
         append(SKAction.moveBy(x: x, y: y, duration: duration))
     }
     
-    func circle(diameter: CGFloat, duration: CGFloat = 2.0) {
+    final func circle(diameter: CGFloat, duration: CGFloat = 2.0) {
         let radius = diameter / 2
         let circlePath = UIBezierPath(
             arcCenter: .zero,
@@ -58,46 +76,46 @@ class Alien {
         append(followCircle)
     }
 
-    func square(side: CGFloat, duration: CGFloat = 2.0) {
+    final func square(side: CGFloat, duration: CGFloat = 2.0) {
         moveBy(x: side, y: 0, duration: duration / 4)
         moveBy(x: 0, y: side, duration: duration / 4)
         moveBy(x: -side, y: 0, duration: duration / 4)
         moveBy(x: 0, y: -side, duration: duration / 4)
     }
     
-    func append(_ action: SKAction) {
+    final func append(_ action: SKAction) {
         actionsStack.peek()?.append(action)
     }
     
-    func group(_ closure: () -> Void) {
+    final func group(_ closure: () -> Void) {
         actionsStack.push(ActionsList())
         closure()
         let actions = actionsStack.pop()!
         append(SKAction.group(actions.list))
     }
     
-    func sequence(_ closure: () -> Void) {
+    final func sequence(_ closure: () -> Void) {
         actionsStack.push(ActionsList())
         closure()
         let actions = actionsStack.pop()!
         append(SKAction.sequence(actions.list))
     }
     
-    func repeatFor(count: Int, _ closure: () -> Void) {
+    final func repeatFor(count: Int, _ closure: () -> Void) {
         actionsStack.push(ActionsList())
         closure()
         let actions = actionsStack.pop()!
         append(SKAction.repeat(SKAction.sequence(actions.list), count: count))
     }
     
-    func repeatForever(_ closure: () -> Void) {
+    final func repeatForever(_ closure: () -> Void) {
         actionsStack.push(ActionsList())
         closure()
         let actions = actionsStack.pop()!
         append(SKAction.repeatForever(SKAction.sequence(actions.list)))
     }
     
-    func run() {
+    final func run() {
         actionsStack = ActionsStack()
         actionsStack.push(ActionsList())
 
@@ -106,8 +124,6 @@ class Alien {
         let actions = actionsStack.pop()!
         node.run(SKAction.sequence(actions.list))
     }
-    
-    func moveMyAlienAround() { }
 }
 
 class MyAlien: Alien {
