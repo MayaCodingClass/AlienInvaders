@@ -60,7 +60,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var aliens: [SKSpriteNode] = []
     var laserFiringAction: SKAction!
     var isFiringLaser = false
-    var currentTouchLocation: CGPoint?
+    var isTouching = false
+    var tryingToStartKillingAliens = false
+    var targetDefenderPosition: CGPoint = .zero
     
     override func didMove(to view: SKView) {
         backgroundColor = .black
@@ -130,24 +132,42 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
-        currentTouchLocation = touch.location(in: self)
-        moveDefender(to: currentTouchLocation!)
-        startFiringLaser()
+        isTouching = true
+        tryingToStartKillingAliens = true
+        moveDefender(to: touch.location(in: self))
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
-        currentTouchLocation = touch.location(in: self)
-        moveDefender(to: currentTouchLocation!)
+        isTouching = true
+        tryingToStartKillingAliens = true
+        moveDefender(to: touch.location(in: self))
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        isTouching = false
         stopFiringLaser()
     }
     
+    override func update(_ currentTime: TimeInterval) {
+        guard tryingToStartKillingAliens else { return }
+
+        let distance = abs(defender.position.x - targetDefenderPosition.x)
+        
+        if distance <= 20 {
+            tryingToStartKillingAliens = false
+            if isTouching {
+                startFiringLaser()
+            } else {
+                fireLaser()
+            }
+        }
+    }
+
     func moveDefender(to position: CGPoint) {
-        let moveAction = SKAction.moveTo(x: position.x, duration: 0.2)
-        defender.run(moveAction)
+        targetDefenderPosition = position
+        let distance = abs(defender.position.x - position.x)
+        defender.run(SKAction.moveTo(x: position.x, duration: min(0.2, CGFloat(distance / 800))))
     }
     
     func startFiringLaser() {
