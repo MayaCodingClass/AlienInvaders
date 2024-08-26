@@ -31,6 +31,31 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         static let defender: UInt32 = 0x1 << 3
     }
     
+    struct AlienLayout {
+        let rows: Int
+        let columns: Int
+        let size: CGSize
+        let spacing: CGSize
+        
+        var totalWidth : CGFloat {
+            return CGFloat(columns) * size.width + CGFloat(columns - 1) * spacing.width
+        }
+        
+        func offset(col: Int, row: Int) -> CGPoint {
+            return CGPoint(
+                x: CGFloat(col) * self.size.width + CGFloat(col) * self.spacing.width,
+                y: CGFloat(row) * self.size.height + CGFloat(row) * self.spacing.height
+            )
+        }
+    }
+    
+    let alienLayout = AlienLayout(
+        rows: 4,
+        columns: 5,
+        size: CGSize(width: 40, height: 40),
+        spacing: CGSize(width: 20, height: 20)
+    )
+    
     var defender: SKSpriteNode!
     var aliens: [SKSpriteNode] = []
     var laserFiringAction: SKAction!
@@ -57,26 +82,29 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func setupAliens() {
-        let rows = 4
-        let cols = 5
-        let alienSize = CGSize(width: 40, height: 40)
-        let spacing = CGSize(width: 20, height: 20)
-        let totalWidth = CGFloat(cols) * alienSize.width + CGFloat(cols - 1) * spacing.width
+        let rows = alienLayout.rows
+        let cols = alienLayout.columns
+        let totalWidth = alienLayout.totalWidth
         let startX = -totalWidth / 2
+        let startY = self.size.height / 2 - 100
         
         for row in 0..<rows {
             for col in 0..<cols {
-                let alien = SKSpriteNode(color: .green, size: alienSize)
-                let xOffset = CGFloat(col) * (alienSize.width + spacing.width)
-                let yOffset = CGFloat(row) * (alienSize.height + spacing.height)
+                let alien = SKSpriteNode(color: .green, size: alienLayout.size)
+                let offset = alienLayout.offset(col: col, row: row)
                 alien.position = CGPoint(
-                    x: alienSize.width / 2 + startX + xOffset,
-                    y:  -alienSize.height / 2 + self.size.height / 2 - 100 - yOffset)
-                alien.physicsBody = SKPhysicsBody(rectangleOf: alienSize)
-                alien.physicsBody?.isDynamic = true
-                alien.physicsBody?.categoryBitMask = PhysicsCategory.alien
-                alien.physicsBody?.contactTestBitMask = PhysicsCategory.laser
-                alien.physicsBody?.collisionBitMask = PhysicsCategory.none
+                    x: alienLayout.size.width / 2 + startX + offset.x,
+                    y: -alienLayout.size.height / 2 + startY - offset.y)
+
+                do {
+                    let body = SKPhysicsBody(rectangleOf: alienLayout.size)
+                    body.isDynamic = true
+                    body.categoryBitMask = PhysicsCategory.alien
+                    body.contactTestBitMask = PhysicsCategory.laser
+                    body.collisionBitMask = PhysicsCategory.none
+                    alien.physicsBody = body
+                }
+                
                 addChild(alien)
                 aliens.append(alien)
             }
@@ -86,11 +114,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func startAlienMovement() {
         let alienBoxWidth: CGFloat = 40 * 5 + 20 * (5 - 1)
         let widthMinusAliensWithPadding = self.size.width - alienBoxWidth - 20
+        let acrossTime = self.size.width / 400.0
 
-        let moveRight = SKAction.moveBy(x: widthMinusAliensWithPadding / 2, y: 0, duration: 2)
-        let moveLeft = SKAction.moveBy(x: -widthMinusAliensWithPadding, y: 0, duration: 4)
+        let moveRight = SKAction.moveBy(x: widthMinusAliensWithPadding / 2, y: 0, duration: acrossTime / 2)
+        let moveLeft = SKAction.moveBy(x: -widthMinusAliensWithPadding, y: 0, duration: acrossTime)
         let moveDown = SKAction.moveBy(x: 0, y: -60, duration: 0.25)
-        let moveRight2 = SKAction.moveBy(x: widthMinusAliensWithPadding / 2, y: 0, duration: 2)
+        let moveRight2 = SKAction.moveBy(x: widthMinusAliensWithPadding / 2, y: 0, duration: acrossTime / 2)
         let moveSequence = SKAction.sequence([moveRight, moveDown, moveLeft, moveDown, moveRight2])
         let repeatMovement = SKAction.repeatForever(moveSequence)
         
@@ -142,14 +171,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func fireLaser() {
         let laser = SKSpriteNode(color: .red, size: CGSize(width: 4, height: 20))
         laser.position = CGPoint(x: defender.position.x, y: defender.position.y + defender.size.height / 2 + laser.size.height / 2)
-        laser.physicsBody = SKPhysicsBody(rectangleOf: laser.size)
-        laser.physicsBody?.isDynamic = true
-        laser.physicsBody?.categoryBitMask = PhysicsCategory.laser
-        laser.physicsBody?.contactTestBitMask = PhysicsCategory.alien
-        laser.physicsBody?.collisionBitMask = PhysicsCategory.none
-        laser.physicsBody?.usesPreciseCollisionDetection = true
-        addChild(laser)
         
+        do {
+            let body = SKPhysicsBody(rectangleOf: laser.size)
+            body.isDynamic = true
+            body.categoryBitMask = PhysicsCategory.laser
+            body.contactTestBitMask = PhysicsCategory.alien
+            body.collisionBitMask = PhysicsCategory.none
+            body.usesPreciseCollisionDetection = true
+            laser.physicsBody = body
+        }
+        
+        addChild(laser)
         let moveAction = SKAction.moveTo(y: self.size.height / 2 + laser.size.height, duration: 1.0)
         let removeAction = SKAction.removeFromParent()
         laser.run(SKAction.sequence([moveAction, removeAction]))
