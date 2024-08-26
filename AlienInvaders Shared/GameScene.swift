@@ -70,7 +70,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let audio = Audio()
     
     var defender: SKSpriteNode!
-    var aliens: [SKSpriteNode] = []
+    var aliens: [Alien] = []
     var laserFiringAction: SKAction!
     var isFiringLaser = false
     var isTouching = false
@@ -106,9 +106,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         for row in 0..<rows {
             for col in 0..<cols {
-                let alien = SKSpriteNode(color: .green, size: alienLayout.size)
+                let alien = Alien(color: .green, size: alienLayout.size)
                 let offset = alienLayout.offset(col: col, row: row)
-                alien.position = CGPoint(
+                alien.node.position = CGPoint(
                     x: alienLayout.size.width / 2 + startX + offset.x,
                     y: -alienLayout.size.height / 2 + startY - offset.y)
 
@@ -118,10 +118,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     body.categoryBitMask = PhysicsCategory.alien
                     body.contactTestBitMask = PhysicsCategory.laser
                     body.collisionBitMask = PhysicsCategory.none
-                    alien.physicsBody = body
+                    alien.node.physicsBody = body
                 }
                 
-                addChild(alien)
+                addChild(alien.node)
                 aliens.append(alien)
             }
         }
@@ -140,7 +140,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let repeatMovement = SKAction.repeatForever(moveSequence)
         
         for alien in aliens {
-            alien.run(repeatMovement)
+            alien.node.run(repeatMovement)
         }
     }
     

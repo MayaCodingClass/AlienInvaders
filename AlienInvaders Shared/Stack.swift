@@ -33,7 +33,7 @@ struct Stack<T> {
 }
 
 class ListHolder<T> {
-    private var list: [T] = []
+    var list: [T] = []
     
     func append(_ elem: T) {
         list.append(elem)
