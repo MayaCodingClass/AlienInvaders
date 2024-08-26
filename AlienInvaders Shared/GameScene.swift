@@ -20,9 +20,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         // Set the scale mode to scale to fit the window
         scene.scaleMode = .aspectFill
         
+        scene.configureAudioSession()
         return scene
     }
     
+    func configureAudioSession() {
+        let audioSession = AVAudioSession.sharedInstance()
+        do {
+            try audioSession.setCategory(.playback, mode: .default)
+            try audioSession.setActive(true)
+        } catch {
+            print("Failed to configure and activate audio session: \(error)")
+        }
+    }
+
     struct PhysicsCategory {
         static let none: UInt32 = 0
         static let all: UInt32 = UInt32.max
@@ -56,12 +67,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         spacing: CGSize(width: 20, height: 20)
     )
     
+    let audio = Audio()
+    
     var defender: SKSpriteNode!
     var aliens: [SKSpriteNode] = []
     var laserFiringAction: SKAction!
     var isFiringLaser = false
     var isTouching = false
     var tryingToStartKillingAliens = false
+    var shotAtAnAlienForThisTouch = false
     var targetDefenderPosition: CGPoint = .zero
     
     override func didMove(to view: SKView) {
@@ -134,6 +148,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         guard let touch = touches.first else { return }
         isTouching = true
         tryingToStartKillingAliens = true
+        shotAtAnAlienForThisTouch = false
         moveDefender(to: touch.location(in: self))
     }
     
@@ -154,11 +169,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
         let distance = abs(defender.position.x - targetDefenderPosition.x)
         
-        if distance <= 20 {
+        if distance <= 30 {
             tryingToStartKillingAliens = false
             if isTouching {
                 startFiringLaser()
-            } else {
+            } else if !shotAtAnAlienForThisTouch {
                 fireLaser()
             }
         }
@@ -189,6 +204,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func fireLaser() {
+        shotAtAnAlienForThisTouch = true
         let laser = SKSpriteNode(color: .red, size: CGSize(width: 4, height: 20))
         laser.position = CGPoint(x: defender.position.x, y: defender.position.y + defender.size.height / 2 + laser.size.height / 2)
         
@@ -207,7 +223,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let removeAction = SKAction.removeFromParent()
         laser.run(SKAction.sequence([moveAction, removeAction]))
         
-        run(SKAction.playSoundFileNamed("laser.m4a", waitForCompletion: false))
+        audio.playAudio(name: "laser")
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
@@ -233,6 +249,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         laser.removeFromParent()
         alien.removeFromParent()
         
-        run(SKAction.playSoundFileNamed("splat.m4a", waitForCompletion: false))
+        audio.playAudio(name: "splat")
     }
 }
