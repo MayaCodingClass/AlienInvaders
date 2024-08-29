@@ -69,6 +69,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     let audio = Audio()
     
+    var gameStarted = false
     var defender: SKSpriteNode!
     var laserFiringAction: SKAction!
     var isFiringLaser = false
@@ -83,9 +84,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         physicsWorld.contactDelegate = self
         
         setupDefender()
-        setupAliens()
+        let aliens = setupAliens()
 
         audio.playAudio(name: "ui-glitch")
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            self.gameStarted = true
+            self.startMoving(aliens: aliens)
+        }
     }
     
     func setupDefender() {
@@ -97,13 +103,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(defender)
     }
     
-    func setupAliens() {
+    func setupAliens() -> [Alien] {
+        var aliens: [Alien] = []
         let rows = GameScene.AlienLayout.rows
         let cols = GameScene.AlienLayout.columns
         let totalWidth = GameScene.AlienLayout.totalWidth
         let startX = -totalWidth / 2
         let startY = self.size.height / 2 - 100
-        let movement = initialAlienMovement()
 
         for row in 0..<rows {
             for col in 0..<cols {
@@ -133,9 +139,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 }
                 
                 addChild(alien.node)
-                alien.node.run(movement)
+                aliens.append(alien)
             }
         }
+        
+        return aliens
     }
     
     func initialAlienMovement() -> SKAction {
@@ -152,7 +160,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         return SKAction.repeatForever(moveSequence)
     }
     
+    func startMoving(aliens: [Alien]) {
+        let movement = initialAlienMovement()
+        for alien in aliens {
+            alien.node.run(movement)
+        }
+    }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard gameStarted else { return }
         guard let touch = touches.first else { return }
         isTouching = true
         tryingToStartKillingAliens = true
@@ -161,6 +177,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard gameStarted else { return }
         guard let touch = touches.first else { return }
         isTouching = true
         tryingToStartKillingAliens = true
@@ -168,6 +185,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard gameStarted else { return }
         isTouching = false
         stopFiringLaser()
     }
