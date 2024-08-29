@@ -26,7 +26,7 @@ class Alien {
         node.userData = NSMutableDictionary()
         node.userData?["alien"] = self
 
-        node.physicsBody = PhysicsCategory.physicsBody(
+        node.physicsBody = PhysicsCategory.createPhysicsBody(
             size: GameScene.alienConfig.size,
             categoryBitMask: .alien,
             contactTestBitMask: .laser,
