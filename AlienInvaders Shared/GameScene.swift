@@ -295,16 +295,43 @@ extension GameScene: SKPhysicsContactDelegate {
     private func handleAlienCollisionWithEdge(contactPoint: CGPoint, alienNode: SKSpriteNode) {
         guard let alien = alienNode.userData?["alien"] as? Alien else { return }
         
+        alienNode.removeAllActions()
+        var actions: [SKAction] = []
+
         let frame = self.frame
         let pad = 3.0
-        if (contactPoint.x - pad) <= frame.minX || (contactPoint.x + pad) >= frame.maxX {
+        if (contactPoint.x - pad) <= frame.minX {
             alien.mirrorX = -alien.mirrorX
+            actions += alien.actionsFor(alien.hitSide)
+            actions += alien.actionsFor(alien.hitLeftSide)
+        } else if (contactPoint.x + pad) >= frame.maxX {
+            alien.mirrorX = -alien.mirrorX
+            actions += alien.actionsFor(alien.hitSide)
+            actions += alien.actionsFor(alien.hitRightSide)
         }
-        if (contactPoint.y - pad) <= frame.minY || (contactPoint.y + pad) >= frame.maxY {
+        
+        if (contactPoint.y - pad) <= frame.minY {
             alien.mirrorY = -alien.mirrorY
+            actions += alien.actionsFor(alien.hitBottom)
+        } else if (contactPoint.y + pad) >= frame.maxY {
+            alien.mirrorY = -alien.mirrorY
+            actions += alien.actionsFor(alien.hitTop)
         }
+        
+        actions += alien.repeatedActionFor(alien.move)
+        alienNode.runSequence(actions)
+    }
+}
 
-        alienNode.removeAllActions()
-        alien.run()
+extension SKSpriteNode {
+    func runSequence(_ actions: [SKAction]) {
+        switch actions.count {
+        case 0:
+            break
+        case 1:
+            run(actions[0])
+        default:
+            run(SKAction.sequence(actions))
+        }
     }
 }

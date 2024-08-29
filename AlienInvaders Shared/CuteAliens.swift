@@ -12,9 +12,13 @@ class RedAlien: Alien {
         return "RedAlien"
     }
     
-    override func moveMyAlienAround() {
-        moveBy(x: 50.0, y: 50.0)
-        moveBy(x: 50.0, y: -50.0)
+    override func move() {
+        moveBy(x: 75.0, y: 75.0)
+        moveBy(x: 75.0, y: -75.0)
+    }
+    
+    override func hitSide() {
+        moveDown(distance: 200.0)
     }
 }
 
@@ -23,9 +27,13 @@ class TealAlien: Alien {
         return "TealAlien"
     }
     
-    override func moveMyAlienAround() {
-        moveBy(x: 50.0, y: 50.0)
-        moveBy(x: 50.0, y: -50.0)
+    override func move() {
+        moveBy(x: 75.0, y: 75.0)
+        moveBy(x: 75.0, y: -75.0)
+    }
+    
+    override func hitSide() {
+        moveDown(distance: 200.0)
     }
 }
 
@@ -34,9 +42,13 @@ class SpiderAlien: Alien {
         return "SpiderAlien"
     }
     
-    override func moveMyAlienAround() {
-        moveBy(x: 50.0, y: 50.0)
-        moveBy(x: 50.0, y: -50.0)
+    override func move() {
+        moveBy(x: 75.0, y: 75.0)
+        moveBy(x: 75.0, y: -75.0)
+    }
+    
+    override func hitSide() {
+        moveDown(distance: 200.0)
     }
 }
 
@@ -45,7 +57,7 @@ class RobotAlien: Alien {
         return "RobotAlien"
     }
     
-    override func moveMyAlienAround() {
+    override func move() {
         group {
             circle(diameter: 100.0)
             moveDown(distance: 25.0)
@@ -58,7 +70,7 @@ class BabyAlien: Alien {
         "CuteAlien"
     }
 
-    override func moveMyAlienAround() {
+    override func move() {
         group {
             circle(diameter: 20.0)
             moveDown(distance: 5.0)

@@ -44,9 +44,19 @@ class Alien {
         fatalError("'imageName' must be overridden by a subclass")
     }
     
-    func moveMyAlienAround() {
-        fatalError("'moveMyAlienAround' must be overridden by a subclass")
+    func move() {
+        fatalError("'move' must be overridden by a subclass")
     }
+    
+    func hitSide() { }
+    
+    func hitLeftSide() { }
+    
+    func hitRightSide() { }
+    
+    func hitTop() { }
+    
+    func hitBottom() { }
     
     func splat() -> [Alien] {
         return []
@@ -126,28 +136,37 @@ class Alien {
         append(SKAction.repeat(SKAction.sequence(actions.list), count: count))
     }
     
-    final func run() {
+    final func actionsFor(_ collectActions: () -> Void) -> [SKAction] {
         actionsStack = ActionsStack()
         actionsStack.push(ActionsList())
 
-        moveMyAlienAround()
+        collectActions()
 
-        let actions = actionsStack.pop()!
-        node.run(SKAction.repeatForever(SKAction.sequence(actions.list)))
+        return actionsStack.pop()!.list
     }
     
+    final func repeatedActionFor(_ collectActions: () -> Void) -> [SKAction] {
+        let actions = actionsFor(collectActions)
+        if !actions.isEmpty {
+            return [SKAction.repeatForever(SKAction.sequence(actions))]
+        } else {
+            return []
+        }
+    }
+
     final func wasHit() {
         node.removeAllActions()
+        var actions = [SKAction]()
 
         switch state {
         case .marching:
-            run()
+            actions += repeatedActionFor(move)
             state = .evading
         case .evading:
             let newAliens = splat()
             for newAlien in newAliens {
                 newAlien.node.position = node.position
-                newAlien.run()
+                actions += repeatedActionFor(move)
                 node.parent?.addChild(newAlien.node)
             }
             node.removeFromParent()
@@ -156,5 +175,7 @@ class Alien {
         case .dead:
             print("That's odd, you hit an already dead alien!")
         }
+        
+        node.runSequence(actions)
     }
 }
