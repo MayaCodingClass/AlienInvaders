@@ -8,6 +8,8 @@
 import AVFoundation
 
 class Audio {
+    static let Files = ["laser", "splat", "ui-glitch"]
+
     var audioPlayers: [String: AVAudioPlayer] = [:]
 
     init() {
@@ -18,9 +20,9 @@ class Audio {
             print("Failed to set up AVAudioSession: \(error.localizedDescription)")
         }
 
-        for fileName in ["laser", "splat"] {
+        for fileName in Audio.Files {
             guard let url = Bundle.main.url(forResource: fileName, withExtension: "m4a") else {
-                print("Failed to find audio file: \(fileName).mp3")
+                print("Failed to find audio file: \(fileName).m4a")
                 continue
             }
             
@@ -29,7 +31,7 @@ class Audio {
                 audioPlayer.prepareToPlay() // Preload the audio into memory
                 audioPlayers[fileName] = audioPlayer
             } catch {
-                print("Failed to preload audio file: \(fileName).mp3, error: \(error.localizedDescription)")
+                print("Failed to preload audio file: \(fileName).m4a, error: \(error.localizedDescription)")
             }
         }
     }
@@ -46,7 +48,7 @@ class Audio {
 
     func stopAudio(name: String) {
         guard let audioPlayer = audioPlayers[name] else {
-            print("Audio player not found for file: \(name).mp3")
+            print("Audio player not found for file: \(name).m4a")
             return
         }
         

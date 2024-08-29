@@ -84,6 +84,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         setupDefender()
         setupAliens()
+
+        audio.playAudio(name: "ui-glitch")
     }
     
     func setupDefender() {
