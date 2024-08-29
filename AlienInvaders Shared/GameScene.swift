@@ -70,7 +70,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let audio = Audio()
     
     var defender: SKSpriteNode!
-    var aliens: [Alien] = []
     var laserFiringAction: SKAction!
     var isFiringLaser = false
     var isTouching = false
@@ -85,7 +84,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         setupDefender()
         setupAliens()
-        startAlienMovement() // Start continuous movement for aliens
     }
     
     func setupDefender() {
@@ -103,7 +101,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let totalWidth = GameScene.AlienLayout.totalWidth
         let startX = -totalWidth / 2
         let startY = self.size.height / 2 - 100
-        
+        let movement = initialAlienMovement()
+
         for row in 0..<rows {
             for col in 0..<cols {
                 let alien: Alien
@@ -132,12 +131,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 }
                 
                 addChild(alien.node)
-                aliens.append(alien)
+                alien.node.run(movement)
             }
         }
     }
     
-    func startAlienMovement() {
+    func initialAlienMovement() -> SKAction {
         let alienBoxWidth: CGFloat = 40 * 5 + 20 * (5 - 1)
         let widthMinusAliensWithPadding = self.size.width - alienBoxWidth - 20
         let acrossTime = self.size.width / 400.0
@@ -147,11 +146,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let moveDown = SKAction.moveBy(x: 0, y: -60, duration: 0.25)
         let moveRight2 = SKAction.moveBy(x: widthMinusAliensWithPadding / 2, y: 0, duration: acrossTime / 2)
         let moveSequence = SKAction.sequence([moveRight, moveDown, moveLeft, moveDown, moveRight2])
-        let repeatMovement = SKAction.repeatForever(moveSequence)
-        
-        for alien in aliens {
-            alien.node.run(repeatMovement)
-        }
+
+        return SKAction.repeatForever(moveSequence)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -257,17 +253,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func laserDidCollideWithAlien(laser: SKSpriteNode, alienNode: SKSpriteNode) {
         laser.removeFromParent()
-        alienNode.removeAllActions()
-        
-        let alien = alienNode.userData!["owner"] as! Alien
-        alien.hitCount += 1
-        if alien.hitCount == 1 {
-            alien.run()
-        } else {
-            alienNode.removeFromParent()
-            alienNode.userData!["owner"] = nil
-        }
-        
+        (alienNode.userData!["alien"] as! Alien).wasHit()
         audio.playAudio(name: "splat")
     }
 }

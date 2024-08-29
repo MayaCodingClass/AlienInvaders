@@ -10,17 +10,28 @@ import SpriteKit
 typealias ActionsList = ListHolder<SKAction>
 typealias ActionsStack = Stack<ActionsList>
 
+enum AlienState {
+    case marching, evading, dead
+}
+
 class Alien {
     let offset: CGSize = .zero
     var node: SKSpriteNode!
     var actionsStack = ActionsStack()
-    var hitCount = 0
+    var state: AlienState = .marching
     
     init() {
         node = SKSpriteNode(imageNamed: imageName)
         node.size = GameScene.AlienLayout.size
         node.userData = NSMutableDictionary()
-        node.userData!["owner"] = self
+        node.userData!["alien"] = self
+
+        let body = SKPhysicsBody(rectangleOf: GameScene.AlienLayout.size)
+        body.isDynamic = true
+        body.categoryBitMask = GameScene.PhysicsCategory.alien
+        body.contactTestBitMask = GameScene.PhysicsCategory.laser
+        body.collisionBitMask = GameScene.PhysicsCategory.none
+        node.physicsBody = body
     }
     
     // Override these properties and functions in subclass
@@ -119,10 +130,26 @@ class Alien {
         let actions = actionsStack.pop()!
         node.run(SKAction.repeatForever(SKAction.sequence(actions.list)))
     }
-}
+    
+    final func wasHit() {
+        node.removeAllActions()
 
-class MyAlien: Alien {
-    override func moveMyAlienAround() {
-        moveUp(distance: 1.0, duration: 1.0)
+        switch state {
+        case .marching:
+            run()
+            state = .evading
+        case .evading:
+            let newAliens = splat()
+            for newAlien in newAliens {
+                newAlien.node.position = node.position
+                newAlien.run()
+                node.parent?.addChild(newAlien.node)
+            }
+            node.removeFromParent()
+            node.userData!["alien"] = nil
+            state = .dead
+        case .dead:
+            print("That's odd, you hit an already dead alien!")
+        }
     }
 }
