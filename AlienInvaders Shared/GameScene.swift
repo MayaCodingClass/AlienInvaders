@@ -8,7 +8,54 @@
 import SpriteKit
 import AVFoundation
 
-class GameScene: SKScene, SKPhysicsContactDelegate {
+struct PhysicsCategory: OptionSet {
+    let rawValue: UInt32
+    
+    static let none       = PhysicsCategory([])
+    static let all        = PhysicsCategory(rawValue: UInt32.max)
+    static let defender   = PhysicsCategory(rawValue: 1 << 0)
+    static let alien      = PhysicsCategory(rawValue: 1 << 1)
+    static let laser      = PhysicsCategory(rawValue: 1 << 2)
+    static let edge       = PhysicsCategory(rawValue: 1 << 3)
+    
+    static func physicsBody(
+        size: CGSize,
+        categoryBitMask: PhysicsCategory,
+        contactTestBitMask: PhysicsCategory = .none,
+        isDynamic: Bool = false,
+        usesPreciseCollisionDetection: Bool = true
+    ) -> SKPhysicsBody {
+        let body = SKPhysicsBody(rectangleOf: size)
+        body.categoryBitMask = categoryBitMask.rawValue
+        body.contactTestBitMask = contactTestBitMask.rawValue
+        body.collisionBitMask = PhysicsCategory.none.rawValue
+        body.isDynamic = isDynamic
+        body.usesPreciseCollisionDetection = usesPreciseCollisionDetection
+        return body
+    }
+}
+
+struct AlienConfig {
+    let rows: Int
+    let columns: Int
+    let size: CGSize
+    let spacing: CGSize
+    
+    var types: [Alien.Type] = [RedAlien.self, RobotAlien.self, TealAlien.self, SpiderAlien.self]
+    
+    var totalWidth : CGFloat {
+        return CGFloat(columns) * size.width + CGFloat(columns - 1) * spacing.width
+    }
+    
+    func offset(col: Int, row: Int) -> CGPoint {
+        return CGPoint(
+            x: CGFloat(col) * size.width + CGFloat(col) * spacing.width,
+            y: CGFloat(row) * size.height + CGFloat(row) * spacing.height
+        )
+    }
+}
+
+class GameScene: SKScene {
     
     class func newGameScene() -> GameScene {
         // Load 'GameScene.sks' as an SKScene.
@@ -17,50 +64,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             abort()
         }
         
-        // Set the scale mode to scale to fit the window
-        scene.scaleMode = .aspectFill
-        
-        scene.configureAudioSession()
+        scene.configure()
         return scene
     }
     
-    func configureAudioSession() {
-        let audioSession = AVAudioSession.sharedInstance()
-        do {
-            try audioSession.setCategory(.playback, mode: .default)
-            try audioSession.setActive(true)
-        } catch {
-            print("Failed to configure and activate audio session: \(error)")
-        }
-    }
-
-    struct PhysicsCategory {
-        static let none: UInt32 = 0
-        static let all: UInt32 = UInt32.max
-        static let alien: UInt32 = 0x1 << 1
-        static let laser: UInt32 = 0x1 << 2
-        static let defender: UInt32 = 0x1 << 3
-    }
-    
-    struct Layout {
-        let rows: Int
-        let columns: Int
-        let size: CGSize
-        let spacing: CGSize
-        
-        var totalWidth : CGFloat {
-            return CGFloat(columns) * size.width + CGFloat(columns - 1) * spacing.width
-        }
-        
-        func offset(col: Int, row: Int) -> CGPoint {
-            return CGPoint(
-                x: CGFloat(col) * self.size.width + CGFloat(col) * self.spacing.width,
-                y: CGFloat(row) * self.size.height + CGFloat(row) * self.spacing.height
-            )
-        }
-    }
-    
-    static let AlienLayout = Layout(
+    static let alienConfig = AlienConfig(
         rows: 4,
         columns: 5,
         size: CGSize(width: 40, height: 40),
@@ -78,6 +86,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var shotAtAnAlienForThisTouch = false
     var targetDefenderPosition: CGPoint = .zero
     
+    func configure() {
+        scaleMode = .aspectFill
+        
+        let audioSession = AVAudioSession.sharedInstance()
+        do {
+            try audioSession.setCategory(.playback, mode: .default)
+            try audioSession.setActive(true)
+        } catch {
+            print("Failed to configure and activate audio session: \(error)")
+        }
+    }
+    
     override func didMove(to view: SKView) {
         backgroundColor = .black
         physicsWorld.gravity = .zero
@@ -85,7 +105,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         setupDefender()
         let aliens = setupAliens()
-
+        
         audio.playAudio(name: "ui-glitch")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
@@ -96,47 +116,29 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func setupDefender() {
         defender = SKSpriteNode(color: .cyan, size: CGSize(width: 60, height: 20))
-        defender.position = CGPoint(x: 0, y: -self.size.height / 2 + defender.size.height + 20) // Very near the bottom
-        defender.physicsBody = SKPhysicsBody(rectangleOf: defender.size)
-        defender.physicsBody?.isDynamic = false
-        defender.physicsBody?.categoryBitMask = PhysicsCategory.defender
+        defender.position = CGPoint(x: 0, y: -self.size.height / 2 + defender.size.height + 20)
+        defender.physicsBody = PhysicsCategory.physicsBody(
+            size: defender.size,
+            categoryBitMask: .defender
+        )
         addChild(defender)
     }
     
     func setupAliens() -> [Alien] {
+        let config = GameScene.alienConfig
         var aliens: [Alien] = []
-        let rows = GameScene.AlienLayout.rows
-        let cols = GameScene.AlienLayout.columns
-        let totalWidth = GameScene.AlienLayout.totalWidth
-        let startX = -totalWidth / 2
+        let startX = -config.totalWidth / 2
         let startY = self.size.height / 2 - 100
 
-        for row in 0..<rows {
-            for col in 0..<cols {
-                let alien: Alien
-                switch row {
-                case 0:
-                    alien = RedAlien()
-                case 1:
-                    alien = RobotAlien()
-                case 2:
-                    alien = TealAlien()
-                default:
-                    alien = SpiderAlien()
-                }
-                let offset = GameScene.AlienLayout.offset(col: col, row: row)
-                alien.node.position = CGPoint(
-                    x: GameScene.AlienLayout.size.width / 2 + startX + offset.x,
-                    y: -GameScene.AlienLayout.size.height / 2 + startY - offset.y)
+        for row in 0..<config.rows {
+            for col in 0..<config.columns {
+                let alien = config.types[row].init()
+                let offset = config.offset(col: col, row: row)
 
-                do {
-                    let body = SKPhysicsBody(rectangleOf: GameScene.AlienLayout.size)
-                    body.isDynamic = true
-                    body.categoryBitMask = PhysicsCategory.alien
-                    body.contactTestBitMask = PhysicsCategory.laser
-                    body.collisionBitMask = PhysicsCategory.none
-                    alien.node.physicsBody = body
-                }
+                alien.node.position = CGPoint(
+                    x: config.size.width / 2 + startX + offset.x,
+                    y: -config.size.height / 2 + startY - offset.y
+                )
                 
                 addChild(alien.node)
                 aliens.append(alien)
@@ -147,7 +149,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func initialAlienMovement() -> SKAction {
-        let alienBoxWidth: CGFloat = 40 * 5 + 20 * (5 - 1)
+        let config = GameScene.alienConfig
+        let alienBoxWidth: CGFloat =
+            config.size.width * CGFloat(config.rows) +
+            config.spacing.width * CGFloat(config.rows - 1)
+        
         let widthMinusAliensWithPadding = self.size.width - alienBoxWidth - 20
         let acrossTime = self.size.width / 400.0
 
@@ -192,7 +198,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func update(_ currentTime: TimeInterval) {
         guard tryingToStartKillingAliens else { return }
-
+        
         let distance = abs(defender.position.x - targetDefenderPosition.x)
         
         if distance <= 30 {
@@ -204,7 +210,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
         }
     }
-
+    
     func moveDefender(to position: CGPoint) {
         targetDefenderPosition = position
         let distance = abs(defender.position.x - position.x)
@@ -231,27 +237,30 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func fireLaser() {
         shotAtAnAlienForThisTouch = true
+
         let laser = SKSpriteNode(color: .red, size: CGSize(width: 4, height: 20))
-        laser.position = CGPoint(x: defender.position.x, y: defender.position.y + defender.size.height / 2 + laser.size.height / 2)
-        
-        do {
-            let body = SKPhysicsBody(rectangleOf: laser.size)
-            body.isDynamic = true
-            body.categoryBitMask = PhysicsCategory.laser
-            body.contactTestBitMask = PhysicsCategory.alien
-            body.collisionBitMask = PhysicsCategory.none
-            body.usesPreciseCollisionDetection = true
-            laser.physicsBody = body
-        }
-        
+        laser.position = CGPoint(
+            x: defender.position.x,
+            y: defender.position.y + defender.size.height / 2 + laser.size.height / 2
+        )
+        laser.physicsBody = PhysicsCategory.physicsBody(
+            size: laser.size,
+            categoryBitMask: .laser,
+            contactTestBitMask: .alien,
+            isDynamic: true,
+            usesPreciseCollisionDetection: true
+        )
         addChild(laser)
+        
         let moveAction = SKAction.moveTo(y: self.size.height / 2 + laser.size.height, duration: 1.0)
         let removeAction = SKAction.removeFromParent()
         laser.run(SKAction.sequence([moveAction, removeAction]))
         
         audio.playAudio(name: "laser")
     }
-    
+}
+
+extension GameScene: SKPhysicsContactDelegate {
     func didBegin(_ contact: SKPhysicsContact) {
         let firstBody: SKPhysicsBody
         let secondBody: SKPhysicsBody
@@ -264,16 +273,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             secondBody = contact.bodyA
         }
         
-        if firstBody.categoryBitMask == PhysicsCategory.alien && secondBody.categoryBitMask == PhysicsCategory.laser {
-            if let alienNode = firstBody.node as? SKSpriteNode, let laser = secondBody.node as? SKSpriteNode {
-                laserDidCollideWithAlien(laser: laser, alienNode: alienNode)
+        if firstBody.categoryBitMask == PhysicsCategory.alien.rawValue &&
+           secondBody.categoryBitMask == PhysicsCategory.laser.rawValue {
+            if let alienNode = firstBody.node as? SKSpriteNode,
+               let laserNode = secondBody.node as? SKSpriteNode {
+                laserDidCollideWithAlien(laser: laserNode, alienNode: alienNode)
             }
         }
     }
     
     func laserDidCollideWithAlien(laser: SKSpriteNode, alienNode: SKSpriteNode) {
         laser.removeFromParent()
-        (alienNode.userData!["alien"] as! Alien).wasHit()
+        if let alien = alienNode.userData?["alien"] as? Alien {
+            alien.wasHit()
+        }
         audio.playAudio(name: "splat")
     }
 }

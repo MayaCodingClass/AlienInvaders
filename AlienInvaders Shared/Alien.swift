@@ -20,18 +20,17 @@ class Alien {
     var actionsStack = ActionsStack()
     var state: AlienState = .marching
     
-    init() {
+    required init() {
         node = SKSpriteNode(imageNamed: imageName)
-        node.size = GameScene.AlienLayout.size
+        node.size = GameScene.alienConfig.size
         node.userData = NSMutableDictionary()
-        node.userData!["alien"] = self
+        node.userData?["alien"] = self
 
-        let body = SKPhysicsBody(rectangleOf: GameScene.AlienLayout.size)
-        body.isDynamic = true
-        body.categoryBitMask = GameScene.PhysicsCategory.alien
-        body.contactTestBitMask = GameScene.PhysicsCategory.laser
-        body.collisionBitMask = GameScene.PhysicsCategory.none
-        node.physicsBody = body
+        node.physicsBody = PhysicsCategory.physicsBody(
+            size: GameScene.alienConfig.size,
+            categoryBitMask: .alien,
+            contactTestBitMask: .laser,
+            isDynamic: true)
     }
     
     // Override these properties and functions in subclass
