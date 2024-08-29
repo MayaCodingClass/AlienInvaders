@@ -11,13 +11,16 @@ typealias ActionsList = ListHolder<SKAction>
 typealias ActionsStack = Stack<ActionsList>
 
 class Alien {
-    let offset: CGSize
-    var node: SKSpriteNode
+    let offset: CGSize = .zero
+    var node: SKSpriteNode!
     var actionsStack = ActionsStack()
+    var hitCount = 0
     
-    init(color: UIColor, size: CGSize, offset: CGSize = .zero) {
-        self.offset = offset
-        node = SKSpriteNode(color: color, size: size)
+    init() {
+        node = SKSpriteNode(imageNamed: imageName)
+        node.size = GameScene.AlienLayout.size
+        node.userData = NSMutableDictionary()
+        node.userData!["owner"] = self
     }
     
     // Override these properties and functions in subclass
@@ -36,27 +39,27 @@ class Alien {
     
     // Movement functions
 
-    final func moveUp(distance: CGFloat, duration: CGFloat = 1.0) {
+    final func moveUp(distance: CGFloat, duration: CGFloat = 0.25) {
         append(SKAction.moveBy(x: 0, y: distance, duration: duration))
     }
     
-    final func moveDown(distance: CGFloat, duration: CGFloat = 1.0) {
+    final func moveDown(distance: CGFloat, duration: CGFloat = 0.25) {
         append(SKAction.moveBy(x: 0, y: -distance, duration: duration))
     }
     
-    final func moveLeft(distance: CGFloat, duration: CGFloat = 1.0) {
+    final func moveLeft(distance: CGFloat, duration: CGFloat = 0.25) {
         append(SKAction.moveBy(x: -distance, y: 0, duration: duration))
     }
     
-    final func moveRight(distance: CGFloat, duration: CGFloat = 1.0) {
+    final func moveRight(distance: CGFloat, duration: CGFloat = 0.25) {
         append(SKAction.moveBy(x: distance, y: 0, duration: duration))
     }
     
-    final func moveBy(x: CGFloat, y: CGFloat, duration: CGFloat = 1.0) {
+    final func moveBy(x: CGFloat, y: CGFloat, duration: CGFloat = 0.25) {
         append(SKAction.moveBy(x: x, y: y, duration: duration))
     }
     
-    final func circle(diameter: CGFloat, duration: CGFloat = 2.0) {
+    final func circle(diameter: CGFloat, duration: CGFloat = 0.5) {
         let radius = diameter / 2
         let circlePath = UIBezierPath(
             arcCenter: .zero,
@@ -76,8 +79,7 @@ class Alien {
         append(followCircle)
     }
 
-    final func square(side: CGFloat, duration: CGFloat = 2.0) {
-        moveBy(x: side, y: 0, duration: duration / 4)
+    final func square(side: CGFloat, duration: CGFloat = 0.5) {
         moveBy(x: 0, y: side, duration: duration / 4)
         moveBy(x: -side, y: 0, duration: duration / 4)
         moveBy(x: 0, y: -side, duration: duration / 4)
@@ -108,13 +110,6 @@ class Alien {
         append(SKAction.repeat(SKAction.sequence(actions.list), count: count))
     }
     
-    final func repeatForever(_ closure: () -> Void) {
-        actionsStack.push(ActionsList())
-        closure()
-        let actions = actionsStack.pop()!
-        append(SKAction.repeatForever(SKAction.sequence(actions.list)))
-    }
-    
     final func run() {
         actionsStack = ActionsStack()
         actionsStack.push(ActionsList())
@@ -122,7 +117,7 @@ class Alien {
         moveMyAlienAround()
 
         let actions = actionsStack.pop()!
-        node.run(SKAction.sequence(actions.list))
+        node.run(SKAction.repeatForever(SKAction.sequence(actions.list)))
     }
 }
 

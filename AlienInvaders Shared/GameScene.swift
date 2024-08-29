@@ -106,7 +106,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         for row in 0..<rows {
             for col in 0..<cols {
-                let alien = Alien(color: .green, size: GameScene.AlienLayout.size)
+                let alien: Alien
+                switch row {
+                case 0:
+                    alien = RedAlien()
+                case 1:
+                    alien = RobotAlien()
+                case 2:
+                    alien = TealAlien()
+                default:
+                    alien = SpiderAlien()
+                }
                 let offset = GameScene.AlienLayout.offset(col: col, row: row)
                 alien.node.position = CGPoint(
                     x: GameScene.AlienLayout.size.width / 2 + startX + offset.x,
@@ -239,15 +249,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         
         if firstBody.categoryBitMask == PhysicsCategory.alien && secondBody.categoryBitMask == PhysicsCategory.laser {
-            if let alien = firstBody.node as? SKSpriteNode, let laser = secondBody.node as? SKSpriteNode {
-                laserDidCollideWithAlien(laser: laser, alien: alien)
+            if let alienNode = firstBody.node as? SKSpriteNode, let laser = secondBody.node as? SKSpriteNode {
+                laserDidCollideWithAlien(laser: laser, alienNode: alienNode)
             }
         }
     }
     
-    func laserDidCollideWithAlien(laser: SKSpriteNode, alien: SKSpriteNode) {
+    func laserDidCollideWithAlien(laser: SKSpriteNode, alienNode: SKSpriteNode) {
         laser.removeFromParent()
-        alien.removeFromParent()
+        alienNode.removeAllActions()
+        
+        let alien = alienNode.userData!["owner"] as! Alien
+        alien.hitCount += 1
+        if alien.hitCount == 1 {
+            alien.run()
+        } else {
+            alienNode.removeFromParent()
+            alienNode.userData!["owner"] = nil
+        }
         
         audio.playAudio(name: "splat")
     }
