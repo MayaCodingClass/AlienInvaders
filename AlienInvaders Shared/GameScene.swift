@@ -83,7 +83,7 @@ class GameScene: SKScene {
     var tryingToStartKillingAliens = false
     var shotAtAnAlienForThisTouch = false
     var targetDefenderPosition: CGPoint = .zero
-    var edgePhysicsBody: SKPhysicsBody!
+//    var edgePhysicsBody: SKPhysicsBody!
     
     func configureScene() {
         scaleMode = .aspectFill
@@ -114,7 +114,12 @@ class GameScene: SKScene {
     }
     
     private func setupPhysicsWorld() {
-        edgePhysicsBody = SKPhysicsBody(edgeLoopFrom: frame)
+        let body = SKPhysicsBody(edgeLoopFrom: self.frame)
+        body.categoryBitMask = PhysicsCategory.edge.rawValue
+        body.contactTestBitMask = PhysicsCategory.alien.rawValue
+        body.collisionBitMask = 0
+        self.physicsBody = body
+
         backgroundColor = .black
         physicsWorld.gravity = .zero
         physicsWorld.contactDelegate = self
@@ -138,7 +143,7 @@ class GameScene: SKScene {
 
         for row in 0..<config.rows {
             for col in 0..<config.columns {
-                let alien = config.types[row].init()
+                let alien = config.types[row].init(size: config.size)
                 let offset = config.calculateOffset(forColumn: col, row: row)
 
                 alien.node.position = CGPoint(
@@ -258,18 +263,25 @@ class GameScene: SKScene {
 extension GameScene: SKPhysicsContactDelegate {
     func didBegin(_ contact: SKPhysicsContact) {
         let (firstBody, secondBody) = sortedPhysicsBodies(contact.bodyA, contact.bodyB)
-        
-        if firstBody.categoryBitMask == PhysicsCategory.alien.rawValue &&
-           secondBody.categoryBitMask == PhysicsCategory.laser.rawValue {
+
+        if isMatch(firstCategory: .alien, secondCategory: .laser, firstBody: firstBody, secondBody: secondBody) {
             if let alienNode = firstBody.node as? SKSpriteNode,
                let laserNode = secondBody.node as? SKSpriteNode {
                 handleLaserCollision(with: laserNode, hitting: alienNode)
+            }
+        } else if isMatch(firstCategory: .alien, secondCategory: .edge, firstBody: firstBody, secondBody: secondBody) {
+            if let alienNode = firstBody.node as? SKSpriteNode {
+                handleAlienCollisionWithEdge(contactPoint: contact.contactPoint, alienNode: alienNode)
             }
         }
     }
     
     private func sortedPhysicsBodies(_ bodyA: SKPhysicsBody, _ bodyB: SKPhysicsBody) -> (SKPhysicsBody, SKPhysicsBody) {
         return bodyA.categoryBitMask < bodyB.categoryBitMask ? (bodyA, bodyB) : (bodyB, bodyA)
+    }
+
+    private func isMatch(firstCategory: PhysicsCategory, secondCategory: PhysicsCategory, firstBody: SKPhysicsBody, secondBody: SKPhysicsBody) -> Bool {
+        return firstBody.categoryBitMask == firstCategory.rawValue && secondBody.categoryBitMask == secondCategory.rawValue
     }
     
     private func handleLaserCollision(with laser: SKSpriteNode, hitting alienNode: SKSpriteNode) {
@@ -278,5 +290,21 @@ extension GameScene: SKPhysicsContactDelegate {
             alien.wasHit()
         }
         audio.playAudio(name: "splat")
+    }
+    
+    private func handleAlienCollisionWithEdge(contactPoint: CGPoint, alienNode: SKSpriteNode) {
+        guard let alien = alienNode.userData?["alien"] as? Alien else { return }
+        
+        let frame = self.frame
+        let pad = 3.0
+        if (contactPoint.x - pad) <= frame.minX || (contactPoint.x + pad) >= frame.maxX {
+            alien.mirrorX = -alien.mirrorX
+        }
+        if (contactPoint.y - pad) <= frame.minY || (contactPoint.y + pad) >= frame.maxY {
+            alien.mirrorY = -alien.mirrorY
+        }
+
+        alienNode.removeAllActions()
+        alien.run()
     }
 }

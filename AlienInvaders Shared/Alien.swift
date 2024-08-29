@@ -15,12 +15,17 @@ enum AlienState {
 }
 
 class Alien {
+    let size: CGSize
     let offset: CGSize = .zero
     var node: SKSpriteNode!
     var actionsStack = ActionsStack()
     var state: AlienState = .marching
+    var mirrorX = 1.0
+    var mirrorY = 1.0
     
-    required init() {
+    required init(size: CGSize) {
+        self.size = size
+        
         node = SKSpriteNode(imageNamed: imageName)
         node.size = GameScene.alienConfig.size
         node.userData = NSMutableDictionary()
@@ -50,32 +55,32 @@ class Alien {
     // Movement functions
 
     final func moveUp(distance: CGFloat, duration: CGFloat = 0.25) {
-        append(SKAction.moveBy(x: 0, y: distance, duration: duration))
+        append(SKAction.moveBy(x: 0, y: distance * mirrorY, duration: duration))
     }
     
     final func moveDown(distance: CGFloat, duration: CGFloat = 0.25) {
-        append(SKAction.moveBy(x: 0, y: -distance, duration: duration))
+        append(SKAction.moveBy(x: 0, y: -distance * mirrorY, duration: duration))
     }
     
     final func moveLeft(distance: CGFloat, duration: CGFloat = 0.25) {
-        append(SKAction.moveBy(x: -distance, y: 0, duration: duration))
+        append(SKAction.moveBy(x: -distance * mirrorX, y: 0, duration: duration))
     }
     
     final func moveRight(distance: CGFloat, duration: CGFloat = 0.25) {
-        append(SKAction.moveBy(x: distance, y: 0, duration: duration))
+        append(SKAction.moveBy(x: distance * mirrorX, y: 0, duration: duration))
     }
     
     final func moveBy(x: CGFloat, y: CGFloat, duration: CGFloat = 0.25) {
-        append(SKAction.moveBy(x: x, y: y, duration: duration))
+        append(SKAction.moveBy(x: x * mirrorX, y: y * mirrorY, duration: duration))
     }
     
     final func circle(diameter: CGFloat, duration: CGFloat = 0.5) {
         let radius = diameter / 2
         let circlePath = UIBezierPath(
-            arcCenter: .zero,
+            arcCenter: CGPoint(x: 0, y: -(size.height/2) * mirrorY),
             radius: radius,
             startAngle: 0,
-            endAngle: .pi * 2,
+            endAngle: .pi * 2 * mirrorX,
             clockwise: true
         )
         
@@ -90,9 +95,10 @@ class Alien {
     }
 
     final func square(side: CGFloat, duration: CGFloat = 0.5) {
-        moveBy(x: 0, y: side, duration: duration / 4)
-        moveBy(x: -side, y: 0, duration: duration / 4)
-        moveBy(x: 0, y: -side, duration: duration / 4)
+        moveBy(x: 0, y: side * mirrorY, duration: duration / 4)
+        moveBy(x: -side * mirrorX, y: 0, duration: duration / 4)
+        moveBy(x: 0, y: -side * mirrorY, duration: duration / 4)
+        moveBy(x: side * mirrorX, y: 0, duration: duration / 4)
     }
     
     final func append(_ action: SKAction) {
