@@ -64,19 +64,19 @@ class Alien {
     
     // Movement functions
 
-    final func moveUp(distance: CGFloat, duration: CGFloat = 0.25) {
+    final func moveUp(distance: CGFloat = 100.0, duration: CGFloat = 0.25) {
         append(SKAction.moveBy(x: 0, y: distance * mirrorY, duration: duration))
     }
     
-    final func moveDown(distance: CGFloat, duration: CGFloat = 0.25) {
+    final func moveDown(distance: CGFloat = 100.0, duration: CGFloat = 0.25) {
         append(SKAction.moveBy(x: 0, y: -distance * mirrorY, duration: duration))
     }
     
-    final func moveLeft(distance: CGFloat, duration: CGFloat = 0.25) {
+    final func moveLeft(distance: CGFloat = 100.0, duration: CGFloat = 0.25) {
         append(SKAction.moveBy(x: -distance * mirrorX, y: 0, duration: duration))
     }
     
-    final func moveRight(distance: CGFloat, duration: CGFloat = 0.25) {
+    final func moveRight(distance: CGFloat = 100.0, duration: CGFloat = 0.25) {
         append(SKAction.moveBy(x: distance * mirrorX, y: 0, duration: duration))
     }
     
@@ -84,14 +84,14 @@ class Alien {
         append(SKAction.moveBy(x: x * mirrorX, y: y * mirrorY, duration: duration))
     }
     
-    final func circle(diameter: CGFloat, duration: CGFloat = 0.5) {
+    final func circle(diameter: CGFloat = 100.0, duration: CGFloat = 0.5) {
         let radius = diameter / 2
         let circlePath = UIBezierPath(
-            arcCenter: CGPoint(x: 0, y: -(size.height/2) * mirrorY),
+            arcCenter: CGPoint(x: -radius, y: 0),
             radius: radius,
             startAngle: 0,
-            endAngle: .pi * 2 * mirrorX,
-            clockwise: true
+            endAngle: .pi * 2,
+            clockwise: (mirrorX == 1.0)
         )
         
         let followCircle = SKAction.follow(
@@ -105,10 +105,10 @@ class Alien {
     }
 
     final func square(side: CGFloat, duration: CGFloat = 0.5) {
-        moveBy(x: 0, y: side * mirrorY, duration: duration / 4)
-        moveBy(x: -side * mirrorX, y: 0, duration: duration / 4)
-        moveBy(x: 0, y: -side * mirrorY, duration: duration / 4)
-        moveBy(x: side * mirrorX, y: 0, duration: duration / 4)
+        moveBy(x: 0, y: side, duration: duration / 4)
+        moveBy(x: -side, y: 0, duration: duration / 4)
+        moveBy(x: 0, y: -side, duration: duration / 4)
+        moveBy(x: side, y: 0, duration: duration / 4)
     }
     
     final func append(_ action: SKAction) {
