@@ -14,102 +14,78 @@ class Invisivader: Alien {
     
     override func move() {
         group {
-            moveBy(x: 0.0, y: -50.0)
-            circle(diameter: 40.0)
-        }
-    }
-}
-
-class RedHead: Alien {
-    override var imageName: String {
-        return "RedHead"
-    }
-    
-    override func move() {
-        moveBy(x: 100.0, y: 0.0)
-        moveBy(x: -100.0, y: -100.0)
-    }
-}
-
-class RedAlien: Alien {
-    override var imageName: String {
-        return "RedAlien"
-    }
-    
-    override func move() {
-        moveBy(x: 75.0, y: 75.0)
-        moveBy(x: 75.0, y: -75.0)
-    }
-    
-    override func hitSide() {
-        moveDown(distance: 200.0)
-    }
-}
-
-class TealAlien: Alien {
-    override var imageName: String {
-        return "TealAlien"
-    }
-    
-    override func move() {
-        square(side: 100.0)
-        moveBy(x: 0, y: -100)
-    }
-    
-    override func hitSide() {
-        moveDown(distance: 200.0)
-    }
-}
-
-class SpiderAlien: Alien {
-    override var imageName: String {
-        return "SpiderAlien"
-    }
-    
-    override func move() {
-        group {
-            moveDown()
+            circle()
             moveRight()
-        }
-        group {
             moveUp()
-            moveRight()
         }
     }
     
     override func hitSide() {
+    }
+}
+
+class RedWithHatInvader: Alien {
+    override var imageName: String {
+        return "RedWithHatInvader"
+    }
+    
+    override func move() {
+        moveRight()
+        moveUp()
+        moveRight()
+        moveDown()
+        moveRight()
+        moveDown()
+        moveLeft()
+        moveLeft()
+        moveLeft()
+        moveUp()
+    }
+    
+    override func hitSide() {
+    }
+}
+
+class TealInvader: Alien {
+    override var imageName: String {
+        return "TealInvader"
+    }
+    
+    override func move() {
+        moveLeft()
+        moveDown()
+        moveRight()
         moveDown()
     }
+    
+    override func hitSide() {
+    }
 }
 
-class RobotAlien: Alien {
+class SpiderInvader: Alien {
     override var imageName: String {
-        return "RobotAlien"
+        return "SpiderInvader"
     }
     
     override func move() {
         group {
             circle()
-            moveLeft()
-            moveDown()
+            moveRight()
         }
-        group {
-            circle()
-            moveLeft()
-            moveUp()
-        }
+    }
+    
+    override func hitSide() {
     }
 }
 
-class BabyAlien: Alien {
+class RobotInvader: Alien {
     override var imageName: String {
-        "CuteAlien"
+        return "RobotInvader"
     }
-
+    
     override func move() {
-        group {
-            circle(diameter: 20.0)
-            moveDown(distance: 5.0)
-        }
+        moveUp()
+        moveRight()
     }
 }
+

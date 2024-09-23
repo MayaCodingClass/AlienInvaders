@@ -41,7 +41,7 @@ struct AlienConfig {
     let size: CGSize
     let spacing: CGSize
     
-    var types: [Alien.Type] = [/* Invisivader.self, RedHead.self, TealAlien.self, SpiderAlien.self */ RobotAlien.self ]
+    var types: [Alien.Type] = [ TealInvader.self, RedWithHatInvader.self, SpiderInvader.self, RobotInvader.self, Invisivader.self ]
     
     var totalWidth: CGFloat {
         return CGFloat(columns) * size.width + CGFloat(columns - 1) * spacing.width
@@ -67,8 +67,8 @@ class GameScene: SKScene {
     }
     
     static let alienConfig = AlienConfig(
-        rows: 1,
-        columns: 5,
+        rows: 5,
+        columns: 6,
         size: CGSize(width: 40, height: 40),
         spacing: CGSize(width: 20, height: 20)
     )
@@ -107,7 +107,7 @@ class GameScene: SKScene {
         let aliens = setupAliens()
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
             self.gameStarted = true
-//            self.startAlienMovement(aliens: aliens)
+            self.startAlienMovement(aliens: aliens)
         }
         
         audio.playAudio(name: "ui-glitch")
@@ -166,7 +166,7 @@ class GameScene: SKScene {
         let alienBoxWidth: CGFloat = config.size.width * CGFloat(config.columns) + config.spacing.width * CGFloat(config.columns - 1)
         
         let movementDistance = size.width - alienBoxWidth - 20
-        let movementTime = size.width / 400.0
+        let movementTime = size.width / 200.0
 
         let moveRight = SKAction.moveBy(x: movementDistance / 2, y: 0, duration: movementTime / 2)
         let moveLeft = SKAction.moveBy(x: -movementDistance, y: 0, duration: movementTime)
