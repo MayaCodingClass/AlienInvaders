@@ -75,6 +75,9 @@ class GameScene: SKScene {
     
     let audio = Audio()
     
+    var score: SKLabelNode!
+    var lives: SKLabelNode!
+    
     var gameStarted = false
     var defender: SKSpriteNode!
     var laserFiringAction: SKAction!
@@ -101,6 +104,7 @@ class GameScene: SKScene {
     }
     
     override func didMove(to view: SKView) {
+        setupLabels()
         setupPhysicsWorld()
         setupDefender()
 
@@ -111,6 +115,30 @@ class GameScene: SKScene {
         }
         
         audio.playAudio(name: "ui-glitch")
+    }
+    
+    private func setupLabels() {
+        score = createRedLabel(
+            text: "0",
+            position: CGPoint(x: -size.width/2 + 15, y: size.height/2 - 60),
+            alignment: .left)
+        
+        lives = createRedLabel(
+            text: "❤️❤️❤️",
+            position: CGPoint(x: size.width/2 - 15, y: size.height/2 - 60),
+            alignment: .right)
+    }
+    
+    private func createRedLabel(text: String, position: CGPoint, alignment: SKLabelHorizontalAlignmentMode) -> SKLabelNode {
+        let label = SKLabelNode(fontNamed: "Arial")
+        label.fontSize = 24
+        label.fontColor = .red
+        label.zPosition = 1
+        label.text = text
+        label.position = position
+        label.horizontalAlignmentMode = alignment
+        addChild(label)
+        return label
     }
     
     private func setupPhysicsWorld() {
