@@ -15,6 +15,7 @@ enum AlienState {
 }
 
 class Alien {
+    let gameState: GameState
     let size: CGSize
     let offset: CGSize = .zero
     var node: SKSpriteNode!
@@ -23,7 +24,8 @@ class Alien {
     var mirrorX = 1.0
     var mirrorY = 1.0
     
-    required init(size: CGSize) {
+    required init(gameState: GameState, size: CGSize) {
+        self.gameState = gameState
         self.size = size
         
         node = SKSpriteNode(imageNamed: imageName)
@@ -177,5 +179,9 @@ class Alien {
         }
         
         node.runSequence(actions)
+    }
+
+    func shouldShootLaser() -> Bool {
+        return Int.random(in: 0...1000) < 5
     }
 }

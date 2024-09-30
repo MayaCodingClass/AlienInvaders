@@ -5,8 +5,14 @@
 //  Created by Doug on 8/23/24.
 //
 
+import Combine
 import SpriteKit
 import AVFoundation
+
+class GameState: ObservableObject {
+    @Published var score: Int = 0
+    @Published var lives: Int = 3
+}
 
 struct PhysicsCategory: OptionSet {
     let rawValue: UInt32
@@ -75,11 +81,14 @@ class GameScene: SKScene {
     
     let audio = Audio()
     
-    var score: SKLabelNode!
-    var lives: SKLabelNode!
-    
+    var gameState: GameState = GameState()
+    private var cancellables = Set<AnyCancellable>()
+
+    var scoreLabel: SKLabelNode!
+    var livesLabel: SKLabelNode!
+
     var gameStarted = false
-    var defender: SKSpriteNode!
+    var defender: Defender!
     var laserFiringAction: SKAction!
     var isFiringLaser = false
     var isTouching = false
@@ -116,28 +125,32 @@ class GameScene: SKScene {
         
         audio.playAudio(name: "ui-glitch")
     }
-    
+
     private func setupLabels() {
-        score = createRedLabel(
-            text: "0",
-            position: CGPoint(x: -size.width/2 + 15, y: size.height/2 - 60),
-            alignment: .left)
-        
-        lives = createRedLabel(
-            text: "❤️❤️❤️",
-            position: CGPoint(x: size.width/2 - 15, y: size.height/2 - 60),
-            alignment: .right)
+        scoreLabel = createRedLabel()
+        scoreLabel.position = CGPoint(x: -size.width/2 + 15, y: size.height/2 - 60)
+        scoreLabel.horizontalAlignmentMode = .left
+        gameState.$score
+            .map { "\($0)" }
+            .assign(to: \.text, on: scoreLabel)
+            .store(in: &cancellables)
+        addChild(scoreLabel)
+
+        livesLabel = createRedLabel()
+        livesLabel.position = CGPoint(x: size.width/2 - 15, y: size.height/2 - 60)
+        livesLabel.horizontalAlignmentMode = .right
+        gameState.$lives
+            .map { String(repeating: "❤️", count: $0) }
+            .assign(to: \.text, on: livesLabel)
+            .store(in: &cancellables)
+        addChild(livesLabel)
     }
     
-    private func createRedLabel(text: String, position: CGPoint, alignment: SKLabelHorizontalAlignmentMode) -> SKLabelNode {
+    private func createRedLabel() -> SKLabelNode {
         let label = SKLabelNode(fontNamed: "Arial")
         label.fontSize = 24
         label.fontColor = .red
         label.zPosition = 1
-        label.text = text
-        label.position = position
-        label.horizontalAlignmentMode = alignment
-        addChild(label)
         return label
     }
     
@@ -156,13 +169,14 @@ class GameScene: SKScene {
     }
     
     private func setupDefender() {
-        defender = SKSpriteNode(color: .cyan, size: CGSize(width: 60, height: 20))
-        defender.position = CGPoint(x: 0, y: -size.height / 2 + defender.size.height + 20)
-        defender.physicsBody = PhysicsCategory.createPhysicsBody(
-            size: defender.size,
+        defender = Defender(gameState: gameState)
+        defender.node = SKSpriteNode(color: .cyan, size: CGSize(width: 60, height: 20))
+        defender.node.position = CGPoint(x: 0, y: -size.height / 2 + defender.node.size.height + 20)
+        defender.node.physicsBody = PhysicsCategory.createPhysicsBody(
+            size: defender.node.size,
             categoryBitMask: .defender
         )
-        addChild(defender)
+        addChild(defender.node)
     }
     
     private func setupAliens() -> [Alien] {
@@ -173,7 +187,7 @@ class GameScene: SKScene {
 
         for row in 0..<config.rows {
             for col in 0..<config.columns {
-                let alien = config.types[row].init(size: config.size)
+                let alien = config.types[row].init(gameState: gameState, size: config.size)
                 let offset = config.calculateOffset(forColumn: col, row: row)
 
                 alien.node.position = CGPoint(
@@ -231,7 +245,7 @@ class GameScene: SKScene {
     override func update(_ currentTime: TimeInterval) {
         guard tryingToStartKillingAliens else { return }
         
-        if abs(defender.position.x - targetDefenderPosition.x) <= 30 {
+        if abs(defender.node.position.x - targetDefenderPosition.x) <= 30 {
             tryingToStartKillingAliens = false
             if isTouching {
                 startFiringLaser()
@@ -243,8 +257,8 @@ class GameScene: SKScene {
     
     private func moveDefender(to position: CGPoint) {
         targetDefenderPosition = position
-        let distance = abs(defender.position.x - position.x)
-        defender.run(SKAction.moveTo(x: position.x, duration: min(0.2, CGFloat(distance / 800))))
+        let distance = abs(defender.node.position.x - position.x)
+        defender.node.run(SKAction.moveTo(x: position.x, duration: min(0.2, CGFloat(distance / 800))))
     }
     
     private func startFiringLaser() {
@@ -270,8 +284,8 @@ class GameScene: SKScene {
 
         let laser = SKSpriteNode(color: .red, size: CGSize(width: 4, height: 20))
         laser.position = CGPoint(
-            x: defender.position.x,
-            y: defender.position.y + defender.size.height / 2 + laser.size.height / 2
+            x: defender.node.position.x,
+            y: defender.node.position.y + defender.node.size.height / 2 + laser.size.height / 2
         )
         laser.physicsBody = PhysicsCategory.createPhysicsBody(
             size: laser.size,
