@@ -184,4 +184,9 @@ class Alien {
     func shouldShootLaser() -> Bool {
         return Int.random(in: 0...1000) < 5
     }
+    
+    func shouldChageToHeart() -> Bool {
+        // How to determine if I should be a heart?
+        return false
+    }
 }

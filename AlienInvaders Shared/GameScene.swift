@@ -330,8 +330,11 @@ extension GameScene: SKPhysicsContactDelegate {
     
     private func handleLaserCollision(with laser: SKSpriteNode, hitting alienNode: SKSpriteNode) {
         laser.removeFromParent()
-        if let alien = alienNode.userData?["alien"] as? Alien {
+        if let alien = alienNode.userData?["alien"] as? Alien, alien.state != .dead {
             alien.wasHit()
+            if alien.state == .dead {
+                defender.successfullyDestroyed(alien: alien)
+            }
         }
         audio.playAudio(name: "splat")
     }

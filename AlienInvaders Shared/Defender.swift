@@ -14,4 +14,8 @@ class Defender {
     required init(gameState: GameState) {
         self.gameState = gameState
     }
+    
+    func successfullyDestroyed(alien: Alien) {
+        // What should I update when an alien is destroyed?
+    }
 }
